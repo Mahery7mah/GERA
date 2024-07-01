@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-7 mt-5">
+  <form class="d-flex justify-content-between align-items-center" action="{% url 'evenement_sans_article' %}" method="GET">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <input class="form-control" type="date" name="start_date" placeholder="Date de début">
+    <input class="form-control" type="date" name="end_date" placeholder="Date de fin">
+    <button type='submit' class='btn btn-link text-dark btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock search %}
+
+{% block content %}
+<!-- Tableau des événements sans article -->
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th><a href="">Titre</a></th>
+          <th><a href="">Date Debut</a></th>
+          <th><a href="">Date Fin</a></th>
+          <th><a href="">Lieu</a></th>
+          <th><a href="">Catégorie</a></th>
+          <th><a href="">Publié</a></th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for evenement in evenements %}
+        <tr>
+          <td>{{ evenement.Titre_E }}</td>
+          <td>{{ evenement.Date_Debut_E }}</td>
+          <td>{{ evenement.Date_Fin_E|default:"-" }}</td>
+          <td>{{ evenement.ID_Lieu }}</td>
+          <td>{{ evenement.ID_Categorie_E }}</td>
+          <td>{{ evenement.Publie_E }}</td>
+          <td>
+            <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'article_create' encrypted_id=evenement.ID_Evenement|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous rédiger un article sur cet événement?')"><i class='mdi mdi-pencil-box-outline icon-md text-success'></i></a> 
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if evenements.has_other_pages %}
+    <ul class="pagination justify-content-center">
+      {% if evenements.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ evenements.previous_page_number }}">{{ evenements.previous_page_number }}</a></li>
+      {% endif %}
+      <li class="page-item active"><a class="page-link" href="?page={{ evenements.number }}">{{ evenements.number }}</a></li>
+      {% if evenements.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ evenements.next_page_number }}">{{ evenements.next_page_number }}</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ evenements.paginator.num_pages }}">&raquo;</a></li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Modal pour la sélection de la plage de dates -->
+<div class="modal fade" id="dateRangeModal" tabindex="-1" role="dialog" aria-labelledby="dateRangeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dateRangeModalLabel">Sélectionner la plage de dates</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="dateRangeForm">
+          <div class="form-group">
+            <label for="startDate">Date de début</label>
+            <input type="date" class="form-control" id="startDate">
+          </div>
+          <div class="form-group">
+            <label for="endDate">Date de fin</label>
+            <input type="date" class="form-control" id="endDate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" id="export-pdf-confirm">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('#export-pdf').click(function() {
+      $('#dateRangeModal').modal('show');
+    });
+
+    $('#export-pdf-confirm').click(function() {
+      var startDate = $('#startDate').val();
+      var endDate = $('#endDate').val();
+      var category = $('#pdf-category').val();
+      
+      // Redirection vers l'URL d'export en PDF avec les dates et la catégorie sélectionnées
+      window.location.href = '/export-pdf/?start_date=' + startDate + '&end_date=' + endDate + '&category=' + category;
+    });
+  });
+</script>
+{% endblock scripts %}

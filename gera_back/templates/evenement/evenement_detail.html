@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Titre</th>
+          <td>{{ evenement.Titre_E }}</td>
+        </tr>
+        <tr>
+          <th>Début</th>
+          <td>{{ evenement.Date_Heure_Debut_E }}</td>
+        </tr>
+        <tr>
+          <th>Fin</th>
+          <td>{{ evenement.Date_Heure_Fin_E }}</td>
+        </tr>
+        <!-- Add more fields as needed -->
+      </tbody>
+    </table>
+    <a href="{% url 'evenement_list' %}" class="btn btn-primary">Retour à la liste</a>
+  </div>
+</div>
+{% endblock %}

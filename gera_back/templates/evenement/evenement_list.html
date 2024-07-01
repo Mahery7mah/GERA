@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-7">
+  <form class="d-flex justify-content-between align-items-center" action="{% url 'evenement_list' %}" method="GET">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <input class="form-control" type="date" name="start_date" placeholder="Date de début">
+    <input class="form-control" type="date" name="end_date" placeholder="Date de fin">
+    <select class="form-control" name="category" style="display: none;">
+      <option value="invitation" {% if category == 'invitation' %}selected{% endif %}>Invitation</option>
+      <option value="audience" {% if category == 'audience' %}selected{% endif %}>Audience</option>
+    </select>
+    <button type='submit' class='btn btn-link text-light btn-block icon-md custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock search %}
+
+{% block content %}
+<button type="button" class="btn btn-primary mb-3" id="export-pdf"><i class="mdi mdi-calendar-clock"></i> Générer un calendrier entre deux dates</button>
+<button type="button" class="btn btn-primary mb-3" id="generate-calendar"><i class="mdi mdi-calendar-text"></i> Générer un calendrier</button>
+
+<button type="button" class="btn btn-secondary mb-3" id="select-events"><i class="mdi mdi-calendar-multiple-check"></i> Générer un calendrier précis </button>
+<button type="button" class="btn btn-success mb-3" id="confirm-selection" style="display: none;"><i class="mdi mdi-check-circle"></i>Valider la sélection</button>
+
+<!-- Ajouter un champ select pour choisir la catégorie lors de l'export PDF -->
+<select id="pdf-category" class="form-control" style="display: none;">
+  <option value="invitation" {% if category == 'invitation' %}selected{% endif %}>Invitation</option>
+  <option value="audience" {% if category == 'audience' %}selected{% endif %}>Audience</option>
+  <option value="apublier" {% if category == 'apublier' %}selected{% endif %}>A publier</option>
+</select>
+
+<!-- Onglets pour les catégories -->
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link {% if category == 'invitation' %}active{% endif %}" href="?category=invitation">Invitation</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if category == 'audience' %}active{% endif %}" href="?category=audience">Audience</a>
+  </li>
+</ul>
+
+<form id="selected-events-form" action="{% url 'export_pdf_selected_events' %}" method="POST" style="display: none;">
+  {% csrf_token %}
+  <input type="hidden" name="selected_events" id="selected-events-input">
+  <input type="hidden" name="category" value="{{ category }}">
+  <button type="submit" class="btn btn-danger mb-3"><i class="mdi mdi-printer"></i> Exporter en PDF les lignes sélectionnées</button>
+</form>
+
+<!-- Tableau des événements -->
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="select-all"></th>
+          {% if category == 'invitation' %}
+          <th>Date Arrive</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Date Debut</th>
+          <th>Date Fin</th>
+          <th>Lieu</th>
+          <th>Catégorie</th>
+          {% elif category == 'audience' %}
+          <th><a href="?category=audience&sort_by=Num_Audience&direction={% if sort_by == 'Num_Audience' and direction == 'asc' %}desc{% else %}asc{% endif %}">Numéro</a></th>
+          <th>Date Arrivé</th>
+          <th>Interlocuteur</th>
+          <th>Contact</th>
+          <th>Titre</th>
+          <th>Fait</th>
+          {% endif %}
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for evenement in evenements %}
+        <tr>
+          <td><input type="checkbox" class="select-event" value="{{ evenement.ID_Evenement }}"></td>
+          {% if category == 'invitation' %}
+          <td>{{ evenement.Date_Arrive_E }}</td>
+          <td>{{ evenement.Titre_E }}</td>
+          <td>{{ evenement.Description_E }}</td>
+          <td>{{ evenement.Date_Debut_E }} à {{ evenement.Heure_Debut_E }}</td>
+          <td>{{ evenement.Date_Fin_E|default:"-" }}</td>
+          <td>{{ evenement.ID_Lieu }} {{ evenement.ID_Lieu.ID_Adresse.ID_Quartier.Nom_Quartier }}</td>
+          <td>{{ evenement.ID_Categorie_E }}</td>
+          {% elif category == 'audience' %}
+          <td>{{ evenement.Num_Audience }}</td>
+          <td>{{ evenement.Date_Arrive_E }}</td>
+          <td>{{ evenement.ID_Interlocuteur }}<br>{{ evenement.ID_Interlocuteur.Description_I }}</td>
+          <td>{{ evenement.ID_Interlocuteur.Tel_I}}<br>{{ evenement.ID_Interlocuteur.Mail_I|default:"-"}}</td>
+          <td>{{ evenement.Titre_E }}</td>
+          <td class="{% if evenement.Est_Fait %}bg-success text-white{% endif %} justify-content-center">
+            {% if evenement.Est_Fait %}
+              Fait
+            {% else %}
+              <button class="cellule-center btn btn-success btn-mark-done" data-id="{{ evenement.ID_Evenement }}" data-toggle="modal" data-target="#confirmModal">Fait</button>
+            {% endif %}
+          </td>
+          {% endif %}
+          <td class="action">
+            <a class="btn btn-link text-light btn-block custom-btn-link" href="{% url 'evenement_detail' encrypted_id=evenement.ID_Evenement|encrypt_id:SECRET_KEY %}"><i class='mdi mdi-eye'></i></a> |
+            <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'evenement_update' encrypted_id=evenement.ID_Evenement|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment modifier ce evenement ?')"><i class='mdi mdi-border-color'></i></a> |
+            <a class="btn btn-link custom-btn-link text-danger btn-block" href="{% url 'evenement_delete' encrypted_id=evenement.ID_Evenement|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment supprimer cette evenement ?')"><i class='mdi mdi-delete'></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Cette événement a été fait?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+        <button type="button" class="btn btn-primary" id="confirm-yes">Oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de sélection de plage de dates -->
+<div class="modal fade" id="dateRangeModal" tabindex="-1" role="dialog" aria-labelledby="dateRangeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dateRangeModalLabel">Sélectionner la plage de dates</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="dateRangeForm">
+          <div class="form-group">
+            <label for="startDate">Date de début</label>
+            <input type="date" class="form-control" id="startDate">
+          </div>
+          <div class="form-group">
+            <label for="endDate">Date de fin</label>
+            <input type="date" class="form-control" id="endDate">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" id="export-pdf-confirm">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'affichage du PDF -->
+<div class="modal fade" id="pdfPreviewModal" tabindex="-1" role="dialog" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pdfPreviewModalLabel">Aperçu du PDF</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="pdfIframe" src="" width="100%" height="650px"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Marquer un événement comme fait
+    var selectedEventId;
+    $('.btn-mark-done').click(function() {
+        selectedEventId = $(this).data('id');
+    });
+
+    $('#confirm-yes').click(function() {
+        $.ajax({
+            url: '{% url "evenement_mark_done" %}',
+            method: 'POST',
+            data: {
+                'id_evenement': selectedEventId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+    $('#export-pdf').on('click', function() {
+        $('#dateRangeModal').modal('show');
+    });
+
+    $('#export-pdf-confirm').on('click', function() {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        const category = $('#pdf-category').val();
+
+        const pdfUrl = `{% url 'export_pdf' %}?start_date=${startDate}&end_date=${endDate}&category=${category}`;
+
+        $('#pdfIframe').attr('src', pdfUrl);
+        $('#pdfPreviewModal').modal('show');
+        $('#dateRangeModal').modal('hide');
+    });
+
+    $('#generate-calendar').on('click', function() {
+        const pdfUrl = `{% url 'export_pdf_upcoming_invitation' %}`;
+        $('#pdfIframe').attr('src', pdfUrl);
+        $('#pdfPreviewModal').modal('show');
+    });
+
+    $('#select-events').click(function() {
+      $('.select-event').toggle();
+      $('#selected-events-form').toggle();
+    });
+
+    $('#select-all').click(function() {
+      $('.select-event').prop('checked', $(this).prop('checked'));
+    });
+
+    $('#selected-events-form').submit(function(e) {
+      e.preventDefault();
+      var selectedEvents = [];
+      $('.select-event:checked').each(function() {
+        selectedEvents.push($(this).val());
+      });
+      $('#selected-events-input').val(JSON.stringify(selectedEvents));
+      
+      const category = $('#pdf-category').val();
+      const pdfUrl = `{% url 'export_pdf_selected_events' %}?selected_events=${encodeURIComponent(JSON.stringify(selectedEvents))}&category=${encodeURIComponent(category)}`;
+
+      $('#pdfIframe').attr('src', pdfUrl);
+      $('#pdfPreviewModal').modal('show');
+    });
+
+});
+</script>
+{% endblock scripts %}

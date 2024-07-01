@@ -1,0 +1,7 @@
+# typeEvenements
+path('typeEvenement_list', gera_back.typeEvenement_list, name='typeEvenement_list_back'),
+path('typeEvenement-form', gera_back.typeEvenement_create, name='typeEvenement-form'),
+path('<str:encrypted_id>/typeEvenement_detail', gera_back.typeEvenement_detail, name='typeEvenement_detail'),
+path('create_typeEvenement', gera_back.typeEvenement_create, name='typeEvenement_create'),
+path('<str:encrypted_id>/update_typeEvenement/', gera_back.typeEvenement_update, name='typeEvenement_update'),
+path('<str:encrypted_id>/delete_typeEvenement/', gera_back.typeEvenement_delete, name='typeEvenement_delete'),

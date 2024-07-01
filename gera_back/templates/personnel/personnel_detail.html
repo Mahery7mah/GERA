@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <dl class="row">
+      <dt class="col-sm-4 text-warning">Nom :</dt>
+      <dd class="col-sm-8">{{ personnel.Nom_M }}</dd>
+      <dt class="col-sm-4 text-warning">Prénom :</dt>
+      <dd class="col-sm-8">{{ personnel.Prenom_M }}</dd>
+      <dt class="col-sm-4 text-warning">Matricule :</dt>
+      <dd class="col-sm-8">{{ personnel.Matricule_M }}</dd>
+      <dt class="col-sm-4 text-warning">Poste :</dt>
+      <dd class="col-sm-8">{{ personnel.ID_Poste_P }}</dd>
+      <dt class="col-sm-4 text-warning">Email :</dt>
+      <dd class="col-sm-8">{{ personnel.Mail_M }}</dd>
+      <dt class="col-sm-4 text-warning">Téléphone :</dt>
+      <dd class="col-sm-8">{{ personnel.Tel_M }}</dd>
+    </dl>
+    <a href="{% url 'personnel_list_back' %}" class="btn btn-secondary btn-block mt-3">Retour à la liste des personnels</a>
+  </div>
+{% endblock %}

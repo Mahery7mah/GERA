@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GERA</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">    
+</head>
+<body>
+  <div class="container-scroller">
+
+
+  {% if user.is_authenticated %}
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+
+      <a class="brand-logo mt-5" href="../../index.html"><img src="{% static 'img/logo.png' %}" alt="logo"></a>
+      <a class="sidebar-brand brand-logo-mini" href="../../index.html"><img src="{% static 'img/logo.png' %}" alt="logo"></a>
+      <h1 class="title-app">GERA</h1>
+    </div>
+  <div class="sidebar-fixed">
+    <ul class="nav">
+
+      <li class="nav-item nav-category">
+        <span class="nav-nav">Navigation</span>
+      </li>
+      <li class="nav-item menu-items">
+        <a class="nav-link" href="{% url 'dashboard' %}">
+          <span class="menu-icon">
+            <i class="mdi mdi-speedometer"></i>
+          </span>
+          <span class="menu-title">Tableau de bord</span>
+        </a>
+      </li>
+      <li class="nav-item menu-items">
+        <a class="nav-link" data-toggle="collapse" href="#evenement" aria-expanded="false" aria-controls="ui-basic">
+          <span class="menu-icon">
+              <i class="mdi mdi-calendar"></i>
+          </span>
+          <span class="menu-title">Gestion Evenementielles</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="evenement">
+          <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{% url 'evenement_create' %}">Enregistrement</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'evenement_list' %}">Liste</a></li>
+              <li class="nav-item"> <a class="nav-link" href="{% url 'evenement_publier_list' %}">Liste des publications</a></li>
+
+            </ul>
+        </div>
+    </li> 
+    <li class="nav-item menu-items">
+      <a class="nav-link" data-toggle="collapse" href="#article" aria-expanded="false" aria-controls="ui-basic">
+        <span class="menu-icon">
+            <i class="mdi mdi-transcribe"></i>
+        </span>
+        <span class="menu-title">Rédaction d'articles</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="article">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link"  href="{% url 'evenement_sans_article' %}">Elaboration</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'article_list' %}">Catalogue</a></li>
+        </ul>
+      </div>
+  </li> 
+  <li class="nav-item menu-items">
+    <a class="nav-link" data-toggle="collapse" href="#inscription" aria-expanded="false" aria-controls="ui-basic">
+      <span class="menu-icon">
+          <i class="mdi mdi-image-filter-frames"></i>
+      </span>
+      <span class="menu-title">Suivi d'inscription</span>
+      <i class="menu-arrow"></i>
+    </a>
+    <div class="collapse" id="inscription">
+      <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link"  href="{% url 'inscription_suivi' %}">Evénements à venir</a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'historique_inscriptions' %}">Historique</a></li>
+      </ul>
+    </div>
+</li> 
+<li class="nav-item menu-items">
+  <a class="nav-link" href="{% url 'envoi_notification_mail' %}">
+    <span class="menu-icon">
+      <i class="mdi mdi-email"></i>
+    </span>
+    <span class="menu-title">Envoyer des mails</span>
+  </a>
+</li>
+<li class="nav-item menu-items">
+  <a class="nav-link" href="{% url 'message_history' %}">
+    <span class="menu-icon">
+      <i class="mdi mdi-clock"></i>
+    </span>
+    <span class="menu-title">Historique de messages</span>
+  </a>
+</li>
+<li class="nav-item menu-items">
+  <a class="nav-link" href="{% url 'administration_generale' %}">
+    <span class="menu-icon">
+      <i class="mdi mdi-wrench"></i>
+    </span>
+    <span class="menu-title">Adminisration générale</span>
+  </a>
+</li>
+<li class="nav-item menu-items">
+  <a class="nav-link" href="">
+    <span class="menu-icon">
+      <i class="mdi mdi-information-outline"></i>
+    </span>
+    <span class="menu-title">A Propos</span>
+  </a>
+</li>
+<hr>
+<div class="">
+    <form method="post" action="{% url 'adminlogout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-logout">
+        <span class="menu-icon">
+          <i class="mdi mdi-logout text-danger"></i>
+        </span>
+        <span class="menu-title text-light">Se Déconnecter</span>
+      </button>
+    </form>
+</div>
+
+    </ul>
+  </div>
+
+  </nav>
+  <div class="container-fluid page-body-wrapper">
+
+
+  <nav class="navbar p-0 fixed-top d-flex flex-row">
+    <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+      <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../assets/images/logo-mini.svg" alt="logo"></a>
+    </div>
+    <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+        <span class="mdi mdi-menu text-light"></span>
+      </button>
+
+      <ul class="navbar-nav navbar-nav-right">
+        <li class="nav-item dropdown d-none d-lg-block">
+          <a class="btn btn-quick create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#"><i class="mdi mdi-link"></i> Liens rapides</a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'evenement_create' %}" class="dropdown-item preview-item">
+              <div class="preview-thumbnail">
+                <div class="preview-icon bg-dark rounded-circle">
+                  <i class="mdi mdi-file-outline text-primary"></i>
+                </div>
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject ellipsis mb-1">Plannifier un événement</p>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="evenement_list?category=apublier" class="dropdown-item preview-item">
+              <div class="preview-thumbnail">
+                <div class="preview-icon bg-dark rounded-circle">
+                  <i class="mdi mdi-web text-info"></i>
+                </div>
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject ellipsis mb-1">Rediger un nouvel article</p>
+              </div>
+            </a>
+
+          </div>
+        </li>
+        <li class="nav-item dropdown border-left">
+          <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+            <i class="mdi mdi-email"></i>
+            <span class="count bg-success"></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+            <h6 class="p-3 mb-0">Messages</h6>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+              <div class="preview-thumbnail">
+                <img src="../../assets/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
+                <p class="text-muted mb-0"> 1 Minutes ago </p>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+              <div class="preview-thumbnail">
+                <img src="../../assets/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
+                <p class="text-muted mb-0"> 15 Minutes ago </p>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+              <div class="preview-thumbnail">
+                <img src="../../assets/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
+                <p class="text-muted mb-0"> 18 Minutes ago </p>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <p class="p-3 mb-0 text-center">4 new messages</p>
+          </div>
+        </li>
+        <li class="nav-item dropdown border-left">
+          <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+            <i class="mdi mdi-bell"></i>
+            <span class="count bg-danger">{{ notifications_count }}</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+            <h6 class="p-3 mb-0">Notifications</h6>
+            <div class="dropdown-divider"></div>
+            {% for notification in notifications %}
+              <a class="dropdown-item preview-item" href="{% url 'evenement_detail' notification.ID_Evenement.pk %}">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-dark rounded-circle">
+                    <i class="mdi mdi-calendar text-success"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject mb-1">{{ notification.Message }}</p>
+                  <p class="text-muted ellipsis mb-0"> {{ notification.Date_Envoi }} </p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+            {% endfor %}
+            <a class="dropdown-item preview-item" href="{% url 'mark_all_notif_read' %}">
+              <div class="preview-thumbnail">
+                <div class="preview-icon bg-dark rounded-circle">
+                  <i class="mdi mdi-check-circle text-success"></i>
+                </div>
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject mb-1">Tout marquer comme lu</p>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <p class="p-3 mb-0 text-center"><a href="{% url 'admin_notifications' %}">Voir toutes les notifications</a></p>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+            <div class="navbar-profile">
+              <i class="icon-lg mdi mdi-account-circle text-light"></i>
+              <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ user.username }}</p>
+              <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+            </div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+            <h6 class="p-3 mb-0">Administrateur</h6>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+              <div class="preview-thumbnail">
+                <div class="preview-icon bg-dark rounded-circle">
+                  <i class="mdi mdi-settings text-success"></i>
+                </div>
+              </div>
+              <div class="preview-item-content">
+                <p class="preview-subject mb-1">Settings</p>
+              </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item preview-item">
+              <form method="post" action="{% url 'adminlogout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn">
+                  <span class="menu-icon">
+                    <i class="mdi mdi-logout text-danger"></i>
+                  </span>
+                  <span class="menu-title">Se Déconnecter</span>
+                </button>
+              </form>
+            </a>
+            <div class="dropdown-divider"></div>
+            <p class="p-3 mb-0 text-center">Advanced settings</p>
+          </div>
+        </li>
+      </ul>
+      
+      <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+        <span class="mdi mdi-format-line-spacing"></span>
+      </button>
+    </div>
+  </nav>
+
+
+
+
+        {% endif %}
+          <div class="content-wrapper">
+            <div class="row">
+                    <h2 class="mt-5 subtitle">{{ subtitle }}</h2>
+                    {% block search %}
+                    {% endblock %}
+                </div>
+                <hr>
+                {% block content %}
+                {% endblock %}
+              </div>
+            </div>
+</main>
+<div class="modal fade" tabindex="-1" role="dialog" id="successModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Succès</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<script src="{% static 'vendors/chart.js/Chart.min.js' %}"></script>
+
+<script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'js/off-canvas.js' %}"></script>
+<script src="{% static 'js/misc.js' %}"></script>
+<script src="{% static 'js/menu-highlight.js' %}" defer></script>
+
+
+<script>
+  $(document).ready(function () {
+      {% if messages %}
+      $('#successModal').modal('show');
+      {% endif %}
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: "{% url 'check_notifications' %}",
+      success: function(data) {
+        console.log("Notifications checked.");
+      }
+    });
+  });
+</script>
+{% block scripts %}
+
+{% endblock %}
+
+</body>
+</html>

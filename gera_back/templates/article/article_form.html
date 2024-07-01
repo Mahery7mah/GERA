@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-6 grid-margin align-items-center">
+        <div class="card">
+          <div class="card-body">
+            {% if form.fields.Titre_Article %}
+            <div class="form-group">
+    
+              <label for="id_Titre_Article">Titre de l'article</label>
+              {{ form.Titre_Article }}
+            </div>
+            {% endif %}
+
+            {% if form.fields.ID_Auteur %}
+
+            <div class="form-group mt-2">
+              <label for="id_ID_Auteur">Auteur de l'article</label>
+              {{ form.ID_Auteur }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 grid-margin align-items-center">
+        <div class="card">
+          <div class="card-body">
+            {% if form.fields.Publie_A %}
+              <div class="form-group">
+                <label for="id_Publie_A">Publier l'article</label> <br>
+                {{ form.Publie_A }}
+              </div>
+            {% endif %}
+            {% if form.fields.Date_Publication_A %}
+              <div class="form-group mt-4">
+                <label for="id_Date_Publication_A">Date de publication</label>
+                {{ form.Date_Publication_A }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% if form.fields.Contenu_Article %}
+      <div class="form-group">
+        <label for="id_Contenu_Article">Contenu de l'article</label>
+        {{ form.Contenu_Article }}
+      </div>
+    {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Enregistrer</button>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+  {{ form.media }}
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-3">
+  <form class="d-flex justify-content-between align-items-center" method="GET" action="{% url 'categorieEvenement_list_back' %}">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <button type='submit' class='btn btn-link text-light btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-dark table-striped">
+  <!-- Table header -->
+  <thead>
+    <tr>
+      <th><a class="font-weight-bold" href="?sort_by=Categorie_E{% if sort_by == 'Categorie_E' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Categorie {% if sort_by == 'Categorie_E' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+      <th><a class="font-weight-bold" href="?sort_by=ID_Type_E{% if sort_by == 'ID_type' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Type {% if sort_by == 'ID_Type_E' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+
+      <th class="">Actions</th>
+    </tr>
+  </thead>
+  <!-- Table body -->
+  <tbody>
+    {% for categorieEvenement in categorieEvenements %}
+    <tr>
+      <td>{{ categorieEvenement.Categorie_E }}</td>
+      <td>{{ categorieEvenement.ID_Type_E }}</td>
+
+      <td>
+        <a class="btn btn-link text-light btn-block custom-btn-link" href="{% url 'categorieEvenement_detail' encrypted_id=categorieEvenement.ID_Categorie_E|encrypt_id:SECRET_KEY %}"><i class='mdi mdi-eye'></i></a> |
+        <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'categorieEvenement_update' encrypted_id=categorieEvenement.ID_Categorie_E|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment modifier cette categorieEvenement ?')"><i class='mdi mdi-border-color'></i></a> |
+        <a class="btn btn-link custom-btn-link text-danger btn-block" href="{% url 'categorieEvenement_delete' encrypted_id=categorieEvenement.ID_Categorie_E|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment supprimer cette categorieEvenement ?')"><i class='mdi mdi-delete'></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Pagination -->
+
+<div class="pagination">
+  <span class="step-links">
+    {% if categorieEvenements.has_previous %}
+    <a href="?page=1">&laquo; premier</a>
+    <a href="?page={{ categorieEvenements.previous_page_number }}">précédent</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ categorieEvenements.number }} de {{ categorieEvenements.paginator.num_pages }}.
+    </span>
+
+    {% if categorieEvenements.has_next %}
+    <a href="?page={{ categorieEvenements.next_page_number }}">suivant</a>
+    <a href="?page={{ categorieEvenements.paginator.num_pages }}">dernier &raquo;</a>
+    {% endif %}
+  </span>
+
+</div>
+
+
+{% endblock %}

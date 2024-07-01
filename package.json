@@ -1,0 +1,22 @@
+{
+  "name": "gera",
+  "version": "1.0.0",
+  "description": "Connexion\r Nom dutilisateur : mahery\r Mot de passe : mahery",
+  "type": "module",
+  "main": "mahery.js",
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.3.1",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^41.3.1",
+    "@ckeditor/ckeditor5-build-multi-root": "^41.3.1",
+    "@ckeditor/ckeditor5-image": "^41.3.1",
+    "@fullcalendar/core": "^6.1.11",
+    "@fullcalendar/daygrid": "^6.1.11",
+    "@fullcalendar/interaction": "^6.1.11",
+    "@fullcalendar/timegrid": "^6.1.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

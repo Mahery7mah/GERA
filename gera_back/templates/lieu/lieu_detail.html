@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <dl class="row">
+      <dt class="col-sm-4 text-warning">Nom :</dt>
+      <dd class="col-sm-8">{{ lieu.Lieu }}</dd>
+      <dt class="col-sm-4 text-warning">Adresse :</dt>
+      <dd class="col-sm-8">{{ lieu.ID_Adresse.Rue }}, {{ lieu.ID_Adresse.ID_Quartier.Nom_Quartier }}</dd>
+    </dl>
+    <a href="{% url 'lieu_list' %}" class="btn btn-secondary btn-block mt-3">Retour à la liste des Lieux</a>
+  </div>
+{% endblock %}

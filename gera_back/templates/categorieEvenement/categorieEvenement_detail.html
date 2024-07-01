@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <dl class="row">
+      <dt class="col-sm-4 text-warning">Nom :</dt>
+      <dd class="col-sm-8">{{ categorieEvenement.Categorie_E }}</dd>
+    </dl>
+    <a href="{% url 'categorieEvenement_list_back' %}" class="btn btn-secondary btn-block mt-3">Retour à la liste des categorieEvenements</a>
+  </div>
+{% endblock %}

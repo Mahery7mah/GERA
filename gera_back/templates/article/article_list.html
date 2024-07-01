@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-3">
+  <form class="d-flex justify-content-between align-items-center" method="GET" action="{% url 'article_list' %}">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <button type='submit' class='btn btn-link text-light btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-dark table-striped">
+  <!-- Table header -->
+  <thead>
+    <tr>
+        <th><a class="font-weight-bold" href="?sort_by=Titre_Article{% if sort_by == 'Titre_Article' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Titre de l'article {% if sort_by == 'Titre_Article' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+        <th><a class="font-weight-bold" href="?sort_by=Date_Publication_A{% if sort_by == 'Date_Publication_A' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Date de publication {% if sort_by == 'Date_Publication_A' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+        <th class="">Publié</th>
+        <th class="">Auteur</th>
+        <th class="">Evenement associé</th>
+  
+        <th class="">Actions</th>
+    </tr>
+  </thead>
+  <!-- Table body -->
+  <tbody>
+    {% for article in articles %}
+    <tr>
+      <td>{{ article.Titre_Article }}</td>
+      <td>{{ article.Date_Publication_A }}</td>
+      <td>{{ article.Publie_A }}</td>
+      <td>{{ article.ID_Auteur.Nom_Auteur }}</td>
+      <td>{{ article.ID_Evenement.Titre_E}}</td>
+
+      <td class="action">
+        <a class="btn btn-link text-light btn-block custom-btn-link" href="{% url 'article_detail' encrypted_id=article.ID_Article|encrypt_id:SECRET_KEY %}"><i class='mdi mdi-eye'></i></a> |
+        <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'article_update' encrypted_id=article.ID_Article|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment modifier cette article ?')"><i class='mdi mdi-border-color'></i></a> |
+        <a class="btn btn-link custom-btn-link text-danger btn-block" href="{% url 'article_delete' encrypted_id=article.ID_Article|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment supprimer cette article ?')"><i class='mdi mdi-delete'></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Pagination -->
+
+
+
+{% if articles.has_other_pages %}
+<ul class="pagination justify-content-center">
+  {% if articles.has_previous %}
+  <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+  <li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}">{{ articles.previous_page_number }}</a></li>
+  {% endif %}
+  <li class="page-item active"><a class="page-link" href="?page={{ articles.number }}">{{ articles.number }}</a></li>
+  {% if articles.has_next %}
+  <li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}">{{ articles.next_page_number }}</a></li>
+  <li class="page-item"><a class="page-link" href="?page={{ articles.paginator.num_pages }}">&raquo;</a></li>
+  {% endif %}
+</ul>
+{% endif %}
+
+
+{% endblock %}

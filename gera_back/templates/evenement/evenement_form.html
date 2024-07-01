@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-6 grid-margin align-items-center">
+        <div class="card">
+          <div class="card-body">
+            {% if form.fields.Num_Audience %}
+            <div class="form-group">
+    
+              <label for="id_Num_Audience">Audience N° : </label>
+              {{ form.Num_Audience }}
+            </div>
+            {% endif %}
+            {% if form.fields.Titre_E %}
+            <div class="form-group">
+    
+              <label for="id_Titre">Titre de l'événement</label>
+              {{ form.Titre_E }}
+            </div>
+            {% endif %}
+
+            {% if form.fields.Description_E %}
+
+            <div class="form-group mt-3">
+              <label for="id_Description">Description de l'événement</label>
+              {{ form.Description_E }}
+            </div>
+            {% endif %}
+
+            {% if form.fields.ID_Lieu %}
+              <div class="form-group mt-3">
+                <label for="id_ID_Lieu">Lieu</label>
+                {{ form.ID_Lieu }}
+              </div>
+            {% endif %}
+            {% if form.fields.ID_Categorie_E %}
+              <div class="form-group mt-3">
+                <label for="id_ID_Categorie">Catégorie</label>
+                {{ form.ID_Categorie_E }}
+              </div>
+            {% endif %}
+            {% if form.fields.ID_Interlocuteur %}
+              <div class="form-group mt-3">
+                <label for="id_ID_Organisateur">Interlocuteur</label>
+                {{ form.ID_Interlocuteur }}
+              </div>
+            {% endif %}
+            {% if form.fields.Image_E %}
+              <div class="form-group mt-3">
+                <label for="id_Imagee">Image de l'événement</label>
+                {{ form.Image_E }}
+              </div>
+            {% endif %}
+            {% if form.fields.Publie_E %}
+              <div class="form-group mt-3">
+                <label for="Publie_E">Publier</label>
+                {{ form.Publie_E }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 grid-margin align-items-center">
+        <div class="card">
+          <div class="card-body">
+            {% if form.fields.Date_Arrive_E %}
+              <div class="form-group">
+                <label for="id_Date_arrive">Date d'arrivée</label>
+                {{ form.Date_Arrive_E }}
+              </div>
+            {% endif %}
+            {% if form.fields.Date_Debut_E %}
+              <div class="form-group mt-3">
+                <label for="id_Date_Debut">Date de début</label>
+                {{ form.Date_Debut_E }}
+              </div>
+            {% endif %}
+            {% if form.fields.Heure_Debut_E %}
+            <div class="form-group mt-3">
+              <label for="id_Heure_Debut">Heure de début</label>
+              {{ form.Heure_Debut_E }}
+            </div>
+          {% endif %}
+            {% if form.fields.Date_Fin_E %}
+              <div class="form-group mt-3">
+                <label for="id_Date_Fin">Date de fin</label>
+                {{ form.Date_Fin_E }}
+              </div>
+            {% endif %}
+            {% if form.fields.Date_Fin_E %}
+            <div class="form-group mt-3">
+              <label for="id__Heure_Fin">Heure de fin</label>
+              {{ form.Heure_Fin_E }}
+            </div>
+          {% endif %}
+            {% if form.fields.Inscription_E %}
+            <div class="form-group mt-3">
+              <label for="Inscription_E">Inscription</label>
+              {{ form.Inscription_E }}
+            </div>
+          {% endif %}
+          {% if form.fields.Date_Limite_Inscription %}
+          <div class="form-group mt-3">
+            <label for="Date_Limite_Inscription">Date limite d'inscription</label>
+            {{ form.Date_Limite_Inscription }}
+          </div>
+        {% endif %}
+        {% if form.fields.Est_Fait %}
+        <div class="form-group mt-3">
+          <label for="Est_Fait">Est fait</label>
+          {{ form.Est_Fait }}
+        </div>
+      {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Enregistrer</button>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const assignButton = document.getElementById("assign-button");
+    const unassignButton = document.getElementById("unassign-button");
+    const restoreButton = document.getElementById("restore-button");
+    const availablePersonnel = document.getElementById("available-personnel");
+    const assignedPersonnel = document.getElementById("assigned-personnel");
+
+    assignButton.addEventListener("click", function() {
+      moveSelectedOptions(availablePersonnel, assignedPersonnel);
+    });
+
+    unassignButton.addEventListener("click", function() {
+      moveSelectedOptions(assignedPersonnel, availablePersonnel);
+    });
+
+    restoreButton.addEventListener("click", function() {
+      moveAllOptions(assignedPersonnel, availablePersonnel);
+    });
+
+    function moveSelectedOptions(source, destination) {
+      Array.from(source.selectedOptions).forEach(option => {
+        destination.appendChild(option);
+      });
+    }
+
+    function moveAllOptions(source, destination) {
+      Array.from(source.options).forEach(option => {
+        destination.appendChild(option);
+      });
+    }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const inscriptionCheckbox = document.getElementById("id_Inscription_E");
+    const dateLimiteInscriptionField = document.getElementById("id_Date_Limite_Inscription");
+
+    function toggleDateLimiteInscription() {
+      if (inscriptionCheckbox.checked) {
+        dateLimiteInscriptionField.removeAttribute("disabled");
+      } else {
+        dateLimiteInscriptionField.setAttribute("disabled", "disabled");
+      }
+    }
+
+    // Initial call to set the correct state on page load
+    toggleDateLimiteInscription();
+
+    // Add event listener to checkbox to toggle field state
+    inscriptionCheckbox.addEventListener("change", toggleDateLimiteInscription);
+  });
+</script>
+{% endblock %}

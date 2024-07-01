@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-3">
+  <form class="d-flex justify-content-between align-items-center" method="GET" action="{% url 'interlocuteur_list_back' %}">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <button type='submit' class='btn btn-link text-light btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-dark table-striped">
+  <!-- Table header -->
+  <thead>
+    <tr>
+      <th><a class="font-weight-bold" href="?sort_by=Nom_I{% if sort_by == 'Nom_I' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Nom {% if sort_by == 'Nom_I' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+      <th><a class="font-weight-bold" href="?sort_by=Prenom_I{% if sort_by == 'Prenom_I' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Prénom(s) {% if sort_by == 'Prenom_I' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+      <th class="">Description</th>
+      <th class="">Mail</th>
+      <th class="">Tel</th>
+      <th class="">Actions</th>
+    </tr>
+  </thead>
+  <!-- Table body -->
+  <tbody>
+    {% for interlocuteur in interlocuteurs %}
+    <tr>
+      <td>{{ interlocuteur.Nom_I }}</td>
+      <td>{{ interlocuteur.Prenom_I }}</td>
+      <td>{{ interlocuteur.Description_I }}</td>
+      <td>{{ interlocuteur.Mail_I }}</td>
+      <td>{{ interlocuteur.Tel_I }}</td>
+      <td>
+        <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'interlocuteur_update' encrypted_id=interlocuteur.ID_Interlocuteur|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment modifier cette interlocuteur ?')"><i class='mdi mdi-border-color'></i></a> |
+        <a class="btn btn-link custom-btn-link text-danger btn-block" href="{% url 'interlocuteur_delete' encrypted_id=interlocuteur.ID_Interlocuteur|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment supprimer cette interlocuteur ?')"><i class='mdi mdi-delete'></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Pagination -->
+
+<div class="pagination">
+  <span class="step-links">
+    {% if interlocuteurs.has_previous %}
+    <a href="?page=1">&laquo; premier</a>
+    <a href="?page={{ interlocuteurs.previous_page_number }}">précédent</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ interlocuteurs.number }} de {{ interlocuteurs.paginator.num_pages }}.
+    </span>
+
+    {% if interlocuteurs.has_next %}
+    <a href="?page={{ interlocuteurs.next_page_number }}">suivant</a>
+    <a href="?page={{ interlocuteurs.paginator.num_pages }}">dernier &raquo;</a>
+    {% endif %}
+  </span>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Détails des inscriptions pour {{ evenement.Titre_E }}</h2>
+    <p>Date de début : {{ evenement.Date_Debut_E }} à {{ evenement.Heure_Debut_E }}</p>
+    <p>Date de fin : {{ evenement.Date_Fin_E }} à {{ evenement.Heure_Fin_E }}</p>
+    <p>Catégorie : {{ evenement.ID_Categorie_E.Categorie_E }}</p>
+    <p>Lieu : {{ evenement.ID_Lieu }}</p>
+    <h3>Liste des inscrits</h3>
+    <table class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Date d'inscription</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inscrit in inscrits %}
+            <tr>
+                <td>{{ inscrit.ID_Membre.Nom_M }}</td>
+                <td>{{ inscrit.ID_Membre.Prenom_M }}</td>
+                <td>{{ inscrit.ID_Membre.Mail_M }}</td>
+                <td>{{ inscrit.Date_Inscription_E }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

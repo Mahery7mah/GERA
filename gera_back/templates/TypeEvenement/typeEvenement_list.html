@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-3">
+  <form class="d-flex justify-content-between align-items-center" method="GET" action="{% url 'typeEvenement_list_back' %}">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <button type='submit' class='btn btn-link text-light btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-dark table-striped">
+  <!-- Table header -->
+  <thead>
+    <tr>
+      <th><a class="font-weight-bold" href="?sort_by=Type_E{% if sort_by == 'Type_E' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Type {% if sort_by == 'Type_E' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+    </tr>
+  </thead>
+  <!-- Table body -->
+  <tbody>
+    {% for typeEvenement in typeEvenements %}
+    <tr>
+      <td>{{ typeEvenement.Nom_Type_E }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Pagination -->
+
+<div class="pagination">
+  <span class="step-links">
+    {% if typeEvenements.has_previous %}
+    <a href="?page=1">&laquo; premier</a>
+    <a href="?page={{ typeEvenements.previous_page_number }}">précédent</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ typeEvenements.number }} de {{ typeEvenements.paginator.num_pages }}.
+    </span>
+
+    {% if typeEvenements.has_next %}
+    <a href="?page={{ typeEvenements.next_page_number }}">suivant</a>
+    <a href="?page={{ typeEvenements.paginator.num_pages }}">dernier &raquo;</a>
+    {% endif %}
+  </span>
+
+</div>
+
+
+{% endblock %}

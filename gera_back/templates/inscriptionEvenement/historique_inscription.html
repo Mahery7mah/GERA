@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+    <h2>Historique des inscriptions aux événements</h2>
+    <ul class="nav nav-tabs" id="historiqueTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="membre-simple-tab" data-toggle="tab" href="#membre-simple" role="tab" aria-controls="membre-simple" aria-selected="true">Membre Simple</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="membre-personnel-tab" data-toggle="tab" href="#membre-personnel" role="tab" aria-controls="membre-personnel" aria-selected="false">Membre Personnel</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="historiqueTabsContent">
+        <div class="tab-pane fade show active" id="membre-simple" role="tabpanel" aria-labelledby="membre-simple-tab">
+            <h3>Événements Publics</h3>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evenement in evenements_publics %}
+                    <tr>
+                        <td>{{ evenement.Titre_E }}</td>
+                        <td>{{ evenement.Date_Debut_E }}</td>
+                        <td>{{ evenement.Date_Fin_E|default:"-" }}</td>
+                        <td class="action"><a class="btn btn-link text-light btn-block custom-btn-link" href="{% url 'detail_inscription' encrypted_id=evenement.ID_Evenement|encrypt_id:SECRET_KEY %}"><i class='mdi mdi-eye'></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="membre-personnel" role="tabpanel" aria-labelledby="membre-personnel-tab">
+            <h3>Événements Personnels</h3>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evenement in evenements_personnels %}
+                    <tr>
+                        <td>{{ evenement.Titre_E }}</td>
+                        <td>{{ evenement.Date_Debut_E }}</td>
+                        <td>{{ evenement.Date_Fin_E|default:"-" }}</td>
+                        <td class="action"><a class="btn btn-link text-light btn-block custom-btn-link" href="{% url 'detail_inscription' encrypted_id=evenement.ID_Evenement|encrypt_id:SECRET_KEY %}"><i class='mdi mdi-eye'></i></a></td>
+                        
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

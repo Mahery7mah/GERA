@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    
+      <div class="col-sm-4 grid-margin">
+        <a class="selection-card" href="{% url 'create_evenement_invitation' %}">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                  <h2 class="mb-0">Invitation</h2>
+                </div>
+                <h6 class="font-weight-normal mt-3">Evenement par Invitation</h6>
+              </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-account-multiple-plus text-primary ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <a href="{% url 'create_evenement_audience' %}">
+    
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                  <h2 class="mb-0">Audience</h2>
+                </div>
+                <h6 class="font-weight-normal  mt-3">Evenement Audience</h6>
+              </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-account-multiple-outline text-danger ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <a href="{% url 'create_evenement_a_publier' %}">
+    
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                  <h2 class="mb-0">A publier</h2>
+                </div>
+                <h6 class="font-weight-normal  mt-3">Evenement A publier</h6>
+              </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-send text-success ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+    </div>
+    
+{% endblock %}

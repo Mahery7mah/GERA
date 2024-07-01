@@ -1,0 +1,81 @@
+
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="col-md-3">
+<select class="form-control" id="evenement_selection">
+  <option value="">Sélectionner un événement</option>
+  {% for evenement in evenement_list %}
+  <option class="text-light" value="{{ evenement.ID_Evenement}}">{{ evenement.Titre_E }}</option>
+  {% endfor %}
+</select>
+</div>
+
+<br>
+<div id="evenement_details"></div>
+<br>
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Date d'inscription</th>
+    </tr>
+  </thead>
+  <tbody id="inscrits_list">
+  </tbody>
+</table>
+
+{% endblock content %}
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('#evenement_selection').change(function() {
+      const evenement_id = $(this).val();
+      if (evenement_id) {
+        $.ajax({
+          url: '/get-inscrits-by-evenement/',
+          method: 'POST',
+          data: { evenement_id: evenement_id },
+          success: function(response) {
+            if (response.error) {
+              alert(response.error);
+            } else {
+              let html = '';
+              for (const inscrit of response) {
+                html += `<tr>
+                  <td>${inscrit.ID_Membre__Nom_M}</td>
+                  <td>${inscrit.ID_Membre__Prenom_M}</td>
+                  <td>${inscrit.Date_Inscription_E}</td>
+                </tr>`;
+              }
+              $('#inscrits_list').html(html);
+              const evenement_titre = $(`option[value="${evenement_id}"]`).text();
+              const dateLimiteInscription = response[0].ID_Evenement__Date_Limite_Inscription;
+              const dateHeureDebut = response[0].ID_Evenement__Date_Debut_E;
+              $('#evenement_details').html(`
+              <div class="col-md-6">
+                  <div class="card-apublier">
+                    <div class="card-2 card-body">
+                      <h6>Inscrits à l'événement : ${evenement_titre}</h6>
+                      <p><i class="mdi mdi-calendar-clock text-light"></i> Date limite d'inscription : ${dateLimiteInscription}</p>
+                      <p><i class="mdi mdi-calendar text-light"></i> Date de début : ${dateHeureDebut}</p>
+                    </div>
+                  </div>
+                </div>
+              `);
+            }
+          },
+          error: function(error) {
+            console.error(error);
+          }
+        });
+      } else {
+        $('#inscrits_list').html('');
+        $('#evenement_details').html('');
+      }
+    });
+  });
+</script>
+{% endblock scripts %}

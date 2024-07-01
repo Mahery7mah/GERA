@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4>{{ evenement.Titre_E }}</h4>
+        </div>
+        <div class="card-body">
+            {% for notification in notifications_with_members %}
+            <div class="card mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mb-3">
+                        <small class="text-light">{{ notification.latest_date|date:"d M Y H:i" }}</small>
+                    </div>
+                </div>
+                <div class="card-4 card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="text-light">{{ notification.Message }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-group">
+                            {% for membre in notification.members %}
+                            <li class="list-group-item">
+                                <strong>{{ membre.ID_Membre__Nom_M }}</strong> - {{ membre.ID_Membre__Mail_M }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="mt-4">
+        <a href="{% url 'message_history' %}" class="btn btn-secondary">Retour</a>
+    </div>
+{% endblock content %}

@@ -1,0 +1,214 @@
+/* Reset some default styles */
+html, body, div, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+dl, dt, dd, ol, ul, li, fieldset, form, label, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #fff;
+    text-align: left;
+    margin: 0;
+    background-image: url('../img/abstract-flowing-neon-wave-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/* Header styles */
+header {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    right: 0 !important;
+    box-shadow: 0 0 10px blue !important;
+}
+
+
+
+
+#sidebar-ul a {
+    margin-bottom: 20px;
+
+}
+/* Ajoutez le style pour la classe "active" */
+#sidebar-ul a.active {
+    position: relative;
+    color: #ffd401;
+    background-color: rgba(13, 0, 255, 0.2);
+
+    height: 40px;
+    box-shadow: 0 0 10px blue !important;
+
+}
+/* #sidebar-ul a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid white;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+} */
+
+#sidebar-ul a.active::before {
+    content: "";
+    position: absolute;
+    right: -20px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid blue;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    box-shadow: 0 0 10px blue !important;
+
+}
+
+
+
+
+
+/* Ajoutez le style pour la classe "clicked" */
+.sidebar-nav .collapse a.clicked {
+    background-color: blue !important; /* Ajoutez la couleur que vous souhaitez ici */
+
+}
+
+
+
+/* Sidebar styles */
+aside {
+
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+    height: 100vh !important;
+    box-shadow: 0 0 10px blue;
+
+}
+
+
+
+
+
+th, td {
+    border: 1px solid #4d01ff;
+    padding: 8px;
+    text-align: center;
+    color: #4d01ff;
+}
+
+.ma{
+    background-color: #4d01ff;
+    color: black;
+}
+
+.icon-size {
+    font-size: 35px;
+}
+
+.btn-vert {
+    height: 40px;
+    line-height: 1;
+    font-weight: normal;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #72ff00;
+}
+
+
+#dashboard-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.dashboard-section {
+    background-color: #333; /* Couleur de fond pour chaque section */
+    border: 2px solid #4d01ff; /* Bordure autour de chaque section */
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    width: 30%; /* Ajustez la largeur selon vos besoins */
+    text-align: center;
+    color: white;
+}
+
+.sidebar-nav .collapse a.active {
+    background-color: blue !important; /* Couleur pour indiquer l'élément actif */
+}
+
+.custom-btn-link:hover{
+    color: yellow !important;
+    text-decoration: blink;
+}
+
+.custom-width {
+    width: 50%;
+}
+/* Footer styles */
+footer {
+position: fixed;
+bottom: 0;
+width: 100%;
+text-align: center;
+font-family: Masterpiece;
+font-size: 36px;
+color: black;
+background-color: #4d01ff;
+margin-top: 5px;
+}
+
+ul .sub-menu{
+    margin-right: 60px !important;
+}
+
+.main-panel {
+    transition: width 0.25s ease, margin 0.25s ease;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding-top: 70px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column; }
+    @media (max-width: 991px) {
+      .main-panel {
+        margin-left: 0;
+        width: 100%; } }
+  
+  .content-wrapper {
+    background: #000000;
+    padding: 1.875rem 1.75rem;
+    width: 100%;
+    -webkit-flex-grow: 1;
+    flex-grow: 1; }
+  
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -0.75rem;
+        margin-left: -0.75rem; }  
+
+.form-control{
+    margin-bottom: 5px;
+}
+
+label{
+    margin-top: 5px;
+}
+
+button{
+    background-color: #000000;
+}
+
+

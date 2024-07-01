@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row col-md-12">
+  <!-- Première colonne -->
+  <div class="col-md-8">
+    <!-- Statistique des événements -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <h5 class="card-title">Statistiques des événements <span class="text-success">({{ total_events }})</span></h5>
+              <div class="row">
+                <!-- Card Invitation -->
+                <div class="col-md-4 mt-2">
+                  <div class="card-invitation">
+                    <div class="card-1 card-body">
+                      <h6>Invitation <i class="mdi mdi-email-plus"></i></h6>
+                      <p class="dashboard text-light">Nombre Total: {{ total_invitation_events }}</p>
+                      <p class="dashboard text-light">À venir: {{ upcoming_invitation_events }}</p>
+                      <p class="dashboard text-light">Passés: {{ past_invitation_events }}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Audience -->
+                <div class="col-md-4 mt-2">
+                  <div class="card-audience">
+                    <div class="card-2 card-body">
+                      <h6>Audience <i class="mdi mdi-account-group"></i></h6>
+                      <p class="dashboard text-light">Nombre Total: {{ total_audience_events }}</p>
+                      <p class="dashboard text-light">Taux de complétion:
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-1" role="progressbar" style="width: {{ audience_completion_rate }}%;" aria-valuenow="{{ audience_completion_rate }}" aria-valuemin="0" aria-valuemax="100">{{ audience_completion_rate }}%</div>
+                        </div>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card À publier -->
+                <div class="col-md-4 mt-2">
+                  <div class="card-apublier">
+                    <div class="card-3 card-body">
+                      <h6>À publier <i class="mdi mdi-book-open-page-variant"></i></h6>
+                      <p class="dashboard text-light">Nombre Total: {{ total_apublier_events }}</p>
+                      <p class="dashboard text-light">À venir: {{ upcoming_apublier_events }}</p>
+                      <p class="dashboard text-light">Publiés: {{ published_apublier_events }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistiques des membres -->
+    <div class="col-md-12 mt-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Statistiques des membres <span class="text-success">({{ total_new_members }})</span></h5>
+          <div class="row">
+           <!-- Card membres simples -->
+
+            <div class="col-md-6 mt-2">
+              <div class="card-membre simples">
+                <div class="card-4 card-body">
+              <h6>Membres simples <i class="mdi mdi-account"></i></h6>
+              <p class="dashboard text-light">Nombre Total: {{ total_clients }}</p>
+              <p class="dashboard text-light">Taux de participation:
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-1" role="progressbar" style="width: {{ client_participation_rate }}%;" aria-valuenow="{{ client_participation_rate }}" aria-valuemin="0" aria-valuemax="100">{{ client_participation_rate }}%</div>
+                </div>
+              </p>
+            </div>
+          </div>
+            </div>
+          <!-- Card membres personnels -->
+
+            <div class="col-md-6 mt-2">
+              <div class="card-personnel">
+                <div class="card-5 card-body">
+              <h6>Membres du personnel <i class="mdi mdi-tie"></i></h6>
+              <p class="dashboard text-light">Nombre Total: {{ total_personnel }}</p>
+              <p class="dashboard text-light">Taux de participation:
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-1" role="progressbar" style="width: {{ personnel_participation_rate }}%;" aria-valuenow="{{ personnel_participation_rate }}" aria-valuemin="0" aria-valuemax="100">{{ personnel_participation_rate }}%</div>
+                </div>
+              </p>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistiques des articles -->
+    <div class="col-md-12 mt-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Statistiques des articles <i class="mdi mdi-file-document-outline"></i></h5>
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="card-membre simples">
+          <p class="dashboard text-light">Nombre Total des articles rédigés: {{ total_articles }}</p>
+          <p class="dashboard text-light">Nombre Total des articles publiés: {{ total_published_articles }}</p>
+
+              </p>
+            </div>
+          </div>
+
+            <div class="col-md-6">
+              <div class="card-title">
+                <img class="img-article mt-1" src="{% static 'img/article-1.png' %}" alt="">
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Deuxième colonne -->
+  <div class="col-md-4 mt-2">
+    <!-- Doughnut Chart -->
+
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body graphique">
+            <h5 class="card-title text-light">Fréquence des événements par mois</h5>
+            <canvas id="monthlyEventFrequencyChart" style="height: 170px; width: 100%; color: white;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card-a-venir card">
+          <div class="card-body"><div class="chartjs-size-monitor">
+          <h5 class="card-title">Evénements à venir</h5>
+          <div class="row justify-content-center">
+          <div class="col-md-6">
+          <canvas id="upcomingEventsDoughnutChart"></canvas>
+        </div>
+      </div>
+      </div>
+        </div>
+      </div>
+    </div>
+    <!-- Graphique -->
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script src="../static/js/chart.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Data for monthly event frequency chart
+      var data = {{ data_json|safe }};
+      
+      var ctx = document.getElementById('monthlyEventFrequencyChart').getContext('2d');
+      var monthlyEventFrequencyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            label: 'Fréquence des événements',
+            data: data.data,
+            borderColor: 'rgba(100, 192, 192, 1)',
+            borderWidth: 2,
+            fill: false,
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: 'white', // Changement de la couleur des textes de l'axe y
+              },
+            },
+            x: {
+              ticks: {
+                color: 'white', // Changement de la couleur des textes de l'axe x
+              },
+            }
+          },
+        }
+      });
+
+      // Data for upcoming events doughnut chart
+      var upcomingEventCounts = {{ upcoming_event_counts|safe }};
+      var ctxDoughnut = document.getElementById('upcomingEventsDoughnutChart').getContext('2d');
+      var upcomingEventsDoughnutChart = new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+          labels: ['Invitation', 'Audience', 'À publier'],
+          datasets: [{
+            data: [upcomingEventCounts.invitation, upcomingEventCounts.audience, upcomingEventCounts.apublier],
+            backgroundColor: [
+              'rgba(0, 255, 174, 0.6)',
+              'rgba(192, 0, 147, 0.6)',
+              'rgba(255, 247, 0, 0.6)'
+            ],
+            borderColor: [
+              'rgba(0, 255, 174, 1)',
+              'rgba(192, 0, 147, 1)',
+              'rgba(255, 247, 0, 1)'
+            ],
+            borderWidth: 1,
+            
+          }]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: 'white' // Changement de la couleur des légendes
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                display : false,
+                color: 'white' // Changement de la couleur des textes de l'axe y
+              },
+            },
+            x: {
+              ticks: {
+                display : false,
+                color: 'white' // Changement de la couleur des textes de l'axe x
+              },
+            }
+          }
+        }
+      });
+    });
+  </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get the progress bar elements
+    var clientProgressBar = document.querySelector('.card-membre .progress-bar');
+    var personnelProgressBar = document.querySelector('.card-personnel .progress-bar');
+  
+    // Get the participation rates from the HTML content (assuming they're stored in elements with IDs)
+    var clientParticipationRate = document.getElementById('client-participation-rate').textContent;
+    var personnelParticipationRate = document.getElementById('personnel-participation-rate').textContent;
+  
+    // Set the progress bar widths
+    clientProgressBar.style.width = clientParticipationRate + '%';
+    personnelProgressBar.style.width = personnelParticipationRate + '%';
+  });
+  </script>
+{% endblock %}

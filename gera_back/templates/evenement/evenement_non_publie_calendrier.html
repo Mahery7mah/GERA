@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h2>Calendrier des événements non publiés</h2>
+    <div id="calendar"></div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    events: [
+      {% for evenement in evenements_non_publies %}
+      {
+        title: "{{ evenement.Titre_Evenenement }}",
+        start: "{{ evenement.Date_Heure_Debut|date:'Y-m-d' }}T{{ evenement.Date_Heure_Debut|time:'H:i' }}",
+        end: "{{ evenement.Date_Heure_Fin|date:'Y-m-d' }}T{{ evenement.Date_Heure_Fin|time:'H:i' }}",
+        url: "{% url 'publier_evenement' evenement.ID_Evenement %}"
+      },
+      {% endfor %}
+    ],
+    eventClick: function(info) {
+      info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+      if (confirm("Voulez-vous vraiment publier cet événement?")) {
+        window.location.href = info.event.url;
+      }
+    }
+  });
+
+  calendar.render();
+});
+</script>
+{% endblock scripts %}

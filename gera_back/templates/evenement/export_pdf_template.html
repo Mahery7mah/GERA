@@ -1,0 +1,164 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste des événements</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif !important;
+    }
+    #content-wrapper {
+      margin: 0 auto;
+      max-width: 900px
+      ;
+      text-align: center
+      ;
+    }
+    h1 {
+      text-align: center;
+      font-size: 14px !important;
+      color: #ff0000;
+    }
+    h2 {
+      color: #777777;
+    }
+
+    table {
+      position: relative;
+
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #777777 !important;
+      padding: 8px !important;
+      font-size : 16px !important;
+      text-align: left !important
+      ;
+    }
+    td{
+      background-color: #cdcdcd !important;
+
+    }
+    th {
+      background-color: #007504;
+      color: #fff;
+      text-align: center;
+    }
+    .logo{
+      text-align: center !important;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #date_arrive{
+      width: 100px !important;
+    }
+    #titre {
+      width: 300px !important;
+    }
+    #description {
+      width: 700px !important;
+    }
+    #date {
+      width: 200px !important;
+    }
+    #lieu {
+      width: 250px !important;
+    }
+    #categorie {
+      width: 100px !important;
+    }
+    tbody tr {
+      border-radius: 7px !important; /* Arrondir les bords des lignes */
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    tbody tr td:first-child {
+      border-top-left-radius: 7px !important;
+      border-bottom-left-radius: 10px !important;
+    }
+
+    tbody tr td:last-child {
+      border-top-right-radius: 7px !important;
+      border-bottom-right-radius: 7px !important;
+    }
+
+    thead tr th:first-child {
+      border-top-left-radius: 7px !important;
+      border-bottom-left-radius: 7px !important;
+    }
+
+    thead tr th:last-child {
+      border-top-right-radius: 7px !important;
+      border-bottom-right-radius: 7px !important;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div id="content-wrapper">
+    <img src="data:image/png;base64,{{ logo_data }}" alt="Logo MESUPRES" class="logo"/>
+    {% if category == 'invitation' %}
+    <h2>Calendrier des invitations</h2>
+
+    {% elif category == 'audience' %}
+    <h1>Calendrier des audiences</h1>
+
+    {% endif %}
+    {% for group in evenement_list %}
+    <h1>{{ group.date_arrive_trunc|date:"d F Y" }}</h1>
+    <table>
+      <thead>
+        <tr>
+          {% if category == 'invitation' %}
+          <th id="date_arrive">Date d'arrivée</th>
+          <th id="titre">Titre</th>
+          <th id="description">Description</th>
+          <th id="date">Debut</th>
+          <th id="date">Fin</th>
+          <th id="lieu">Lieu</th>
+          {% elif category == 'audience' %}
+          <th>Numéro</a></th>
+          <th>Date Arrivé</th>
+          <th>Interlocuteur</th>
+          <th>Contact</th>
+          <th>Titre</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for evenement in group.evenement_list %}
+        <tr>
+          {% if category == 'invitation' %}
+          <td id="date_arrive">{{ evenement.Date_Arrive_E }}</td>
+          <td id="titre">{{ evenement.Titre_E }}<br>{{ evenement.ID_Categorie_E }}</td>
+          <td id="description">{{ evenement.Description_E }}</td>
+          <td id="date">{{ evenement.Date_Debut_E }} à {{ evenement.Heure_Debut_E }}</td>
+          <td id="date">{{ evenement.Date_Fin_E|default:"-" }}</td>
+          <td id="lieu">{{ evenement.ID_Lieu }} {{ evenement.ID_Lieu.ID_Adresse.ID_Quartier.Nom_Quartier }}</td>
+          {% elif category == 'audience' %}
+          <td>{{ evenement.Num_Audience }}</td>
+          <td>{{ evenement.Date_Arrive_E }}</td>
+          <td>{{ evenement.ID_Interlocuteur }}<br>{{ evenement.ID_Interlocuteur.Description_I }}</td>
+          <td>{{ evenement.ID_Interlocuteur.Tel_I}}<br>{{ evenement.ID_Interlocuteur.Mail_I}}</td>
+          <td>{{ evenement.Titre_E }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+  </div>
+  <hr>
+  <div class="footer">
+    Antananarivo le, {{ current_date|date:"l, d F Y" }}
+  </div>
+</body>
+</html> 

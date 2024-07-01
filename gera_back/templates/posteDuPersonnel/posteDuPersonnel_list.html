@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-3">
+  <form class="d-flex justify-content-between align-items-center" method="GET" action="{% url 'posteDuPersonnel_list_back' %}">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <button type='submit' class='btn btn-link text-light btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-dark table-striped">
+  <!-- Table header -->
+  <thead>
+    <tr>
+      <th><a class="font-weight-bold" href="?sort_by=Poste_P{% if sort_by == 'Poste_P' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Poste_P {% if sort_by == 'Poste_P' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+      <th class="">Actions</th>
+    </tr>
+  </thead>
+  <!-- Table body -->
+  <tbody>
+    {% for posteDuPersonnel in posteDuPersonnels %}
+    <tr>
+      <td>{{ posteDuPersonnel.Poste_P }}</td>
+      <td>
+        <a class="btn btn-link text-light btn-block custom-btn-link" href="{% url 'posteDuPersonnel_detail' encrypted_id=posteDuPersonnel.ID_Poste_P|encrypt_id:SECRET_KEY %}"><i class='mdi mdi-eye'></i></a> |
+        <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'posteDuPersonnel_update' encrypted_id=posteDuPersonnel.ID_Poste_P|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment modifier cette posteDuPersonnel ?')"><i class='mdi mdi-border-color'></i></a> |
+        <a class="btn btn-link custom-btn-link text-danger btn-block" href="{% url 'posteDuPersonnel_delete' encrypted_id=posteDuPersonnel.ID_Poste_P|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment supprimer cette posteDuPersonnel ?')"><i class='mdi mdi-delete'></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Pagination -->
+
+<div class="pagination">
+  <span class="step-links">
+    {% if posteDuPersonnels.has_previous %}
+    <a href="?page=1">&laquo; premier</a>
+    <a href="?page={{ posteDuPersonnels.previous_page_number }}">précédent</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ posteDuPersonnels.number }} de {{ posteDuPersonnels.paginator.num_pages }}.
+    </span>
+
+    {% if posteDuPersonnels.has_next %}
+    <a href="?page={{ posteDuPersonnels.next_page_number }}">suivant</a>
+    <a href="?page={{ posteDuPersonnels.paginator.num_pages }}">dernier &raquo;</a>
+    {% endif %}
+  </span>
+
+</div>
+
+
+{% endblock %}

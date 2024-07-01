@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">    
+  <h2 class="">Localisations</h2>
+  <div class="col-sm-4 grid-margin">
+    <div class="card">
+      <div class="card-rouge card-body">
+        <div class="row">
+          <div class="col-8 col-sm-12 col-xl-8 my-auto">
+            <div class="d-flex d-sm-block d-md-flex align-items-center">
+                <h3 class="mb-0 text-light">Lieu</h3>
+            </div>
+            <a class="nav-link text-light" href="{% url 'lieu_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+            <a class="nav-link text-light" href="{% url 'lieu_list' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+        </div>
+          <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+            <i class="icon-lg mdi mdi-map-marker text-light ml-auto"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+  </div>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-rouge card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">Quartier</h3>
+                </div>
+                <a class="nav-link text-light" href="{% url 'quartier_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'quartier_list' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-map-marker-radius text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <div class="card ad-card">
+          <div class="card-rouge card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="text-light mb-0">Ville</h3>
+                </div>
+                <a class="nav-link text-light" href="{% url 'ville_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'ville_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-city text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <h2 class="">Evenements</h2>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-orange card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">Catégorie Evénement</h3>
+                </div>
+                <a class="nav-link text-light" href="{% url 'categorieEvenement_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'categorieEvenement_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-calendar-multiple text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-orange card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">Type Evénement</h3>
+                </div>
+                <a class="nav-link disabled" href=""><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'typeEvenement_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-calendar-text text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-orange card-body">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">Interlocuteur Professionel</h3>
+                </div>
+                <a class="nav-link text-light" href="{% url 'interlocuteur_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'interlocuteur_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-2 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-account-settings text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <h2 class="">Membre & personnel</h2>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-6 card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">Poste du personnel</h3>
+                </div>
+                <a class="nav-link text-light" href="{% url 'posteDuPersonnel_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'posteDuPersonnel_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-account-box-outline text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-6 card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">personnel</h3>
+                </div>
+                <a class="nav-link text-light" href="{% url 'personnel_create' %}"><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'personnel_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-account-multiple text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+      <div class="col-sm-4 grid-margin">
+        <div class="card">
+          <div class="card-6 card-body">
+            <div class="row">
+              <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                <div class="d-flex d-sm-block d-md-flex align-items-center">
+                    <h3 class="mb-0 text-light">Type membre</h3>
+                </div>
+                <a class="nav-link disabled" href=""><i class="mdi mdi-chevron-double-right"></i>Enregistrer</a></li>
+                <a class="nav-link text-light" href="{% url 'typeMembre_list_back' %}"><i class="mdi mdi-chevron-double-right"></i>Voir liste</a></li>
+            </div>
+              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                <i class="icon-lg mdi mdi-account-outline text-light ml-auto"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+
+
+{% endblock %}

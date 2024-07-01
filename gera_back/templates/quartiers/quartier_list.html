@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block search %}
+<div class="col-md-3">
+  <form class="d-flex justify-content-between align-items-center" method="GET" action="{% url 'quartier_list' %}">
+    <input class="form-control" type="text" name="q" placeholder="Rechercher...">
+    <button type='submit' class='btn btn-link text-light btn-block custom-btn-link'>
+      <i class='mdi mdi-magnify icon-size'></i></button>
+  </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-dark table-striped">
+  <!-- Table header -->
+  <thead>
+    <tr>
+      <th><a class="font-weight-bold" href="?sort_by=Nom_Quartier{% if sort_by == 'Nom_Quartier' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Nom {% if sort_by == 'Nom_Quartier' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+      <th><a class="font-weight-bold" href="?sort_by=Nom_Ville{% if sort_by == 'Nom_Ville' and direction == 'asc' %}&direction=desc{% else %}&direction=asc{% endif %}">Ville {% if sort_by == 'Nom_Ville' %}{% if direction == 'asc' %}<i class='mdi mdi-chevron-up'></i>{% else %}<i class='mdi mdi-chevron-down'></i>{% endif %}{% endif %}</a></th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <!-- Table body -->
+  <tbody>
+    {% for quartier in quartiers %}
+    <tr>
+      <td>{{ quartier.Nom_Quartier }}</td>
+      <td>{{ quartier.ID_Ville.Nom_Ville }} {{ quartier.ID_Ville.CodePostal }}</td>
+
+      <td>
+        <a class="btn btn-link text-primary btn-block custom-btn-link" href="{% url 'quartier_update' encrypted_id=quartier.ID_Quartier|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment modifier cette quartier ?')"><i class='mdi mdi-border-color'></i></a> |
+        <a class="btn btn-link custom-btn-link text-danger btn-block" href="{% url 'quartier_delete' encrypted_id=quartier.ID_Quartier|encrypt_id:SECRET_KEY %}" onclick="return confirm('Voulez-vous vraiment supprimer cette quartier ?')"><i class='mdi mdi-delete'></i></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Pagination -->
+<div class="pagination">
+  <span class="step-links">
+    {% if quartiers.has_previous %}
+    <a href="?page=1">&laquo; premier</a>
+    <a href="?page={{ quartiers.previous_page_number }}">précédent</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ quartiers.number }} de {{ quartiers.paginator.num_pages }}.
+    </span>
+
+    {% if quartiers.has_next %}
+    <a href="?page={{ quartiers.next_page_number }}">suivant</a>
+    <a href="?page={{ quartiers.paginator.num_pages }}">dernier &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+{% endblock %}
