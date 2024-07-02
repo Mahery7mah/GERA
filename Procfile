@@ -1,0 +1,1 @@
+web: gunicorn project_GERA.wsgi --log-file -
