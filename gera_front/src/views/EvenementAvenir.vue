@@ -3,7 +3,7 @@
     <section id="evenement-a-venir" class="schedule section-with-bg">
       <div class="container section-termine wow fadeInUp">
         <div class="section-header mt-5">
-          <h2>Événements à venir</h2>
+          <h2 class="text-light">Événements à venir</h2>
         </div>
 
         <ul class="nav nav-tabs" role="tablist">
