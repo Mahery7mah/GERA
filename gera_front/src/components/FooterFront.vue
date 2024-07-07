@@ -3,7 +3,6 @@
     <div class="footer-top">
       <div class="container">
         <div class="row">
-
           <div class="col-lg-3 col-md-6 footer-info">
             <div id="logo" class="pull-left">
             <a href="/" class="scrollto"><img src="../assets/images/logo.png" alt="" title=""></a>
@@ -15,7 +14,6 @@
             </p>
           </div>
           </div>
-
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Liens Utils</h4>
             <ul>
@@ -23,10 +21,8 @@
               <li><i class="fa fa-angle-right"></i> <a @click="scrollToSection('Evenement-A-Venir')">Evenements A venir</a></li>
               <li><i class="fa fa-angle-right"></i> <a @click="scrollToSection('Evenement-Termnine')">Archive des événements</a></li>
               <li><i class="fa fa-angle-right"></i> <a @click="scrollToSection('articles')">Articles</a></li>
-
             </ul>
           </div>
-
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Liens Rapides</h4>
             <ul>
@@ -34,10 +30,8 @@
               <li><i class="fa fa-angle-right"></i> <a href="https://www.mesupres.gov.mg">Site Officiel</a></li>
               <li v-if="!isUserLoggedIn"><i class="fa fa-angle-right"></i> <a href="/inscription">Inscription</a></li>
               <li v-if="!isUserLoggedIn" ><i class="fa fa-angle-right"></i> <a href="/connexion">Connexion</a></li>
-            
             </ul>
           </div>
-
           <div class="col-lg-3 col-md-6 footer-contact">
             <h4>Contacter-Nous</h4>
             <p>
@@ -46,7 +40,6 @@
               <strong>Tel</strong> +261 <br>
               <strong>Email:</strong> commesupres@gmail.com<br>
             </p>
-
             <div class="social-links">
               <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
               <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
@@ -54,20 +47,16 @@
               <a href="#" class="google-plus"><i class="fab fa-google-plus"></i></a>
               <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
-
     <div class="container">
       <div class="copyright">
         &copy;<strong>MesuPreS.2024</strong>
       </div>
     </div>
   </footer><!-- #footer -->
-
 </template>
 <script>
 export default {

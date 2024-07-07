@@ -8,7 +8,7 @@
         <div class="row">
         <div class="col-md-6">
         <div class="section-header">
-          <h2>Se connecter</h2>
+          <h2  class="text-manga-kely">Se connecter</h2>
         </div>
       </div>
         <div class="form">

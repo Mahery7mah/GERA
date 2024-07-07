@@ -2330,3 +2330,18 @@ position: relative;
   background-repeat: no-repeat;    
 }
 
+.text-manga-kely {
+  position: relative !important;
+  color: #2600ff !important;
+  border-radius: 0px 0px 50px 50px;
+  background-color: #ffffff !important;
+  top : -20px !important;
+  display: flex !important;
+  text-align: center; 
+  justify-content: center !important;
+
+
+}
+
+
+
